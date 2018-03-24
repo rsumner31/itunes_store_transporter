@@ -391,6 +391,10 @@ describe ITunes::Store::Transporter::Command::Lookup do
       end
     end
   end
+end
+
+describe ITunes::Store::Transporter::Command::Lookup do
+  it_behaves_like "a transporter mode"
 
   # One of these two should be requied, but they should be mutually exclusive
   describe "options" do
@@ -668,4 +672,41 @@ describe ITunes::Store::Transporter::Command::Version do
       end
     end
   end
+   
+  describe "#run" do 
+    context "when the version is major" do 
+      it "returns the version" do 
+        mock_output(:stdout => output_version("1"))
+        subject.run.should == "1"
+      end
+    end
+
+    context "when the version is major.minor" do 
+      it "returns the version" do 
+        mock_output(:stdout => output_version("1.10"))
+        subject.run.should == "1.10"
+      end
+    end
+
+    context "when the version is major.minor.release" do 
+      it "returns the version" do 
+        mock_output(:stdout => output_version("1.10.100"))
+        subject.run.should == "1.10.100"
+      end
+    end
+
+    context "when the version is major.minor.release.build format" do 
+      it "returns the version" do 
+        mock_output(:stdout => output_version("1.10.100.1234"))
+        subject.run.should == "1.10.100.1234"
+      end
+    end
+
+    context "when the version it's somthing else" do 
+      it "returns 'Unknown'" do 
+        mock_output(:stdout => ["bad version here"])
+        subject.run.should == "Unknown"
+      end
+    end
+  end   
 end

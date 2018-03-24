@@ -29,6 +29,8 @@ module ITunes
 
         # 1000...2000?
 
+        # 1000...2000?
+        
         def bad_data?
           (3000...4000).include?(code)
         end
